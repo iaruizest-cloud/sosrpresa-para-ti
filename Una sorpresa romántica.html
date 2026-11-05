@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Una sorpresa para ti</title>
+<style>
+:root {
+  --site-primary: #a94f70;
+  --site-on-primary: #ffffff;
+  --site-secondary: #f3dce5;
+  --site-on-secondary: #573044;
+  --site-background: #fff7f8;
+  --site-on-background: #482b39;
+  --site-font-body: Georgia, 'Times New Roman', serif;
+  --site-font-heading: 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+  color-scheme: light dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: var(--site-font-body); background: var(--site-background); color: var(--site-on-background); }
+#app { min-height: 100vh; width: 100%; border-radius: 0; overflow: hidden; background-color: light-dark(var(--site-background), #241923); color: light-dark(var(--site-on-background), #f8eaf0); position: relative; }
+.hero { min-height: 94vh; display: grid; place-items: center; padding: calc(34px * var(--site-spacing-scale)) 20px 70px; position: relative; isolation: isolate; background: radial-gradient(ellipse at 50% 0%, #f7dce6 0, transparent 58%), linear-gradient(180deg, light-dark(#fff7f8,#241923), light-dark(#fbeaf0,#30212c)); }
+.content { width: min(760px, 100%); text-align: center; position: relative; z-index: 2; }
+.eyebrow { letter-spacing: .22em; text-transform: uppercase; font: 12px Arial, sans-serif; color: var(--site-primary); }
+h1 { font-family: var(--site-font-heading); font-size: clamp(2.6rem, 8vw, calc(5rem * var(--site-heading-scale))); font-weight: 400; line-height: 1.05; margin: 18px 0; }
+.subtitle { font-size: 1.12rem; line-height: 1.8; max-width: 540px; margin: 0 auto 28px; opacity: .86; }
+.flower-row { display: flex; justify-content: center; align-items: end; gap: 16px; margin: 30px auto 24px; height: 120px; }
+.flower { font-size: clamp(2.7rem, 8vw, 4.6rem); display: inline-block; filter: drop-shadow(0 8px 8px #9f577522); animation: sway 3.5s ease-in-out infinite; transform-origin: bottom center; }
+.flower:nth-child(2) { animation-delay: -.8s; font-size: 3.8rem; }
+.flower:nth-child(3) { animation-delay: -1.6s; }
+@keyframes sway { 0%,100% { transform: rotate(-7deg) translateY(0); } 50% { transform: rotate(7deg) translateY(-8px); } }
+button { border: 0; border-radius: 999px; padding: 14px 24px; font: 16px Arial, sans-serif; cursor: pointer; transition: transform .2s, filter .2s; }
+button:hover { transform: translateY(-2px); filter: brightness(1.04); }
+.primary { background: var(--site-primary); color: var(--site-on-primary); box-shadow: 0 9px 25px #a94f7033; }
+.secondary { background: var(--site-secondary); color: var(--site-on-secondary); }
+.card-wrap { padding: 12px 20px 80px; background: light-dark(#fff7f8,#241923); }
+.letter { width: min(680px, 100%); margin: -54px auto 0; position: relative; z-index: 3; padding: clamp(26px, 6vw, 54px); border: 1px solid light-dark(#eed5df,#604252); border-radius: calc(22px * var(--site-radius-scale)); background: light-dark(#fffdfd,#342531); box-shadow: 0 18px 55px #6d3d5018; text-align: left; }
+.letter h2 { text-align: center; font-size: calc(2rem * var(--site-heading-scale)); font-weight: 400; margin: 0 0 22px; }
+.letter p { font-size: 1.08rem; line-height: 1.9; white-space: pre-line; }
+.signature { text-align: right; color: var(--site-primary); font-style: italic; font-size: 1.2rem; }
+.surprise { text-align: center; padding: 48px 20px 10px; }
+.surprise h2 { font-size: 2rem; font-weight: 400; }
+.extras { width: min(900px, calc(100% - 40px)); margin: 54px auto 0; }
+.extras h2 { text-align: center; font-size: 2rem; font-weight: 400; }
+.extras-intro { text-align: center; line-height: 1.7; opacity: .82; }
+.photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-top: 22px; }
+.photo-slot { min-height: 190px; border: 1px dashed light-dark(#d8aebe,#79566a); border-radius: 16px; background: light-dark(#fffdfd,#342531); display: grid; place-items: center; overflow: hidden; position: relative; }
+.photo-slot img { width: 100%; height: 220px; object-fit: cover; display: block; }
+.photo-slot label { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; cursor: pointer; color: var(--site-primary); font: 15px Arial,sans-serif; background: light-dark(#fffdf0cc,#241923cc); }
+.photo-slot input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.photo-slot:has(img[src]) label { display: none; }
+.music-list { display: grid; gap: 12px; margin-top: 22px; }
+.song { padding: 17px; border: 1px solid light-dark(#eed5df,#604252); border-radius: 15px; background: light-dark(#fffdfd,#342531); }
+.song strong { display: block; margin-bottom: 5px; }
+.song p { margin: 0 0 10px; opacity: .78; font-size: .94rem; }
+.song audio { width: 100%; }
+.song a { color: var(--site-primary); overflow-wrap: anywhere; }
+.music-editor { margin-top: 20px; }
+.music-editor input { margin-bottom: 8px; }
+.hidden-note { display: none; max-width: 520px; margin: 22px auto 0; padding: 22px; border-radius: 18px; background: var(--site-secondary); color: var(--site-on-secondary); line-height: 1.8; animation: appear .5s ease both; }
+.hidden-note.show { display: block; }
+@keyframes appear { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.editor { width: min(680px, calc(100% - 40px)); margin: 28px auto 0; padding: 22px; border: 1px dashed light-dark(#d8aebe,#79566a); border-radius: 18px; }
+.editor summary { cursor: pointer; color: var(--site-primary); font: 14px Arial,sans-serif; }
+label { display: block; margin: 14px 0 6px; font: 13px Arial,sans-serif; }
+input, textarea { width: 100%; padding: 11px 12px; border: 1px solid light-dark(#e4cbd6,#71586a); border-radius: 10px; background: light-dark(#fff,#2c202b); color: inherit; font: 15px var(--site-font-body); }
+textarea { min-height: 130px; resize: vertical; line-height: 1.6; }
+.editor button { margin-top: 14px; }
+footer { text-align: center; padding: 30px 20px 44px; opacity: .7; font-size: .9rem; }
+.petal { position: absolute; z-index: 1; opacity: var(--site-decoration-opacity); pointer-events: none; font-size: 22px; animation: drift 9s linear infinite; }
+.p1 { left: 8%; top: 20%; } .p2 { right: 10%; top: 28%; animation-delay: -3s; } .p3 { left: 18%; bottom: 18%; animation-delay: -6s; }
+@keyframes drift { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-20px) rotate(25deg); } }
+@media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+</style>
+</head>
+<body>
+<main id="app">
+  <section class="hero">
+    <span class="petal p1">♡</span><span class="petal p2">✿</span><span class="petal p3">♡</span>
+    <div class="content">
+      <div class="eyebrow">Una pequeña sorpresa</div>
+      <h1>Para alguien<br>muy especial</h1>
+      <p class="subtitle" id="heroText">Hay cosas bonitas que me recuerdan a ti… y hoy quería regalarte una de ellas.</p>
+      <div class="flower-row" aria-label="Flores animadas"><span class="flower">🌷</span><span class="flower">🌸</span><span class="flower">🌷</span></div>
+      <button class="primary" onclick="document.getElementById('carta').scrollIntoView({behavior:'smooth'})">Abrir mi carta ♡</button>
+    </div>
+  </section>
+  <section class="card-wrap" id="carta">
+    <article class="letter">
+      <h2 id="letterTitle">Unas palabras para ti</h2>
+      <p id="letterBody">Hay canciones que, por alguna razón, me hacen pensar en ti. No sé si es su letra, su melodía o simplemente lo que me hacen sentir, pero cada vez que las escucho es inevitable que aparezcas en mis pensamientos.
+
+Es como si cada canción tuviera un pedacito de ti y de lo que siento. Quizás no todas hablen de amor, pero para mí terminan teniendo tu nombre, porque me recuerdan lo especial que eres.
+
+Quería que tuvieras un pequeño lugar al que volver cuando quieras recordar cuánto significas para mí.</p>
+      <p class="signature" id="signature">Con mucho cariño ♡</p>
+    </article>
+    <div class="surprise">
+      <h2>Y todavía hay algo más…</h2>
+      <p>Te guardé una pequeña sorpresa.</p>
+      <button class="secondary" id="surpriseBtn" onclick="revealSurprise()">Descubrir sorpresa ✨</button>
+      <div class="hidden-note" id="hiddenNote">Si pudiera elegir una y otra vez a quién dedicarle mis canciones favoritas, siempre volvería a elegirte a ti. ♡</div>
+    </div>
+    <section class="extras" aria-labelledby="photosTitle">
+<h2 id="photosTitle">Como pienso que nos vemos ♡</h2>
+      <div class="photo-grid">
+        <div class="photo-slot"><img id="photo1" alt="Nuestro recuerdo 1" hidden><label for="photoInput1">＋ Agregar una foto</label><input id="photoInput1" type="file" accept="image/*" onchange="showPhoto(event, 'photo1')"></div>
+        <div class="photo-slot"><img id="photo2" alt="Nuestro recuerdo 2" hidden><label for="photoInput2">＋ Agregar una foto</label><input id="photoInput2" type="file" accept="image/*" onchange="showPhoto(event, 'photo2')"></div>
+        <div class="photo-slot"><img id="photo3" alt="Nuestro recuerdo 3" hidden><label for="photoInput3">＋ Agregar una foto</label><input id="photoInput3" type="file" accept="image/*" onchange="showPhoto(event, 'photo3')"></div>
+      </div>
+      <h2 style="margin-top:54px" id="songsTitle">Canciones que me recuerdan a ti 🎶</h2>
+      <p class="extras-intro">Cada canción tiene algo que me hace pensar en ti. Aquí están las que quiero dedicarte.</p>
+      <div class="music-list" id="musicList">
+        <div class="song"><strong>Una canción para ti</strong><p>Agrega un archivo de audio o un enlace a tu canción favorita.</p></div>
+      </div>
+      <details class="editor music-editor">
+        <summary>Agregar canciones para dedicarte</summary>
+        <label for="songName">Nombre de la canción</label>
+        <input id="songName" placeholder="Título de la canción">
+        <label for="songArtist">Artista (opcional)</label>
+        <input id="songArtist" placeholder="Nombre del artista">
+        <label for="songUrl">Enlace directo al archivo de audio (opcional)</label>
+        <input id="songUrl" type="url" placeholder="https://.../cancion.mp3">
+        <label for="songFile">O selecciona un archivo de audio</label>
+        <input id="songFile" type="file" accept="audio/*">
+        <button class="primary" onclick="addSong()">Agregar canción ♡</button>
+      </details>
+    </section>
+    <details class="editor">
+      <summary>Personalizar esta página</summary>
+      <label for="nameInput">Su nombre o apodo</label>
+      <input id="nameInput" placeholder="Por ejemplo: Mi niña bonita">
+      <label for="messageInput">Tu carta</label>
+      <textarea id="messageInput">Hay canciones que, por alguna razón, me hacen pensar en ti. No sé si es su letra, su melodía o simplemente lo que me hacen sentir, pero cada vez que las escucho es inevitable que aparezcas en mis pensamientos.
+
+Es como si cada canción tuviera un pedacito de ti y de lo que siento. Quizás no todas hablen de amor, pero para mí terminan teniendo tu nombre, porque me recuerdan lo especial que eres.</textarea>
+      <label for="signInput">Firma</label>
+      <input id="signInput" placeholder="Con cariño, ...">
+      <button class="primary" onclick="applyEdits()">Actualizar mi sorpresa</button>
+    </details>
+  </section>
+  <footer>Hecho con cariño, solo para ti ♡</footer>
+</main>
+<script>
+function revealSurprise() {
+  const note = document.getElementById('hiddenNote');
+  note.classList.toggle('show');
+  document.getElementById('surpriseBtn').textContent = note.classList.contains('show') ? 'Cerrar sorpresa ♡' : 'Descubrir sorpresa ✨';
+}
+function showPhoto(event, imageId) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  const image = document.getElementById(imageId);
+  image.src = URL.createObjectURL(file);
+  image.hidden = false;
+}
+function addSong() {
+  const title = document.getElementById('songName').value.trim();
+  const artist = document.getElementById('songArtist').value.trim();
+  const url = document.getElementById('songUrl').value.trim();
+  const file = document.getElementById('songFile').files[0];
+  if (!title || (!url && !file)) {
+    alert('Escribe el nombre y agrega un archivo de audio o un enlace directo a un archivo de audio.');
+    return;
+  }
+  const item = document.createElement('div');
+  item.className = 'song';
+  const heading = document.createElement('strong');
+  heading.textContent = title;
+  const details = document.createElement('p');
+  details.textContent = artist;
+  item.append(heading, details);
+  if (file) {
+    const audio = document.createElement('audio');
+    audio.controls = true;
+    audio.src = URL.createObjectURL(file);
+    item.append(audio);
+  }
+  if (url) {
+    const audio = document.createElement('audio');
+    audio.controls = true;
+    audio.src = url;
+    item.append(audio);
+    audio.addEventListener('error', () => {
+      const warning = document.createElement('p');
+      warning.textContent = 'Este enlace no permite reproducir el audio aquí. Usa un enlace directo a un archivo MP3, WAV u otro formato de audio compatible.';
+      item.append(warning);
+    }, { once: true });
+  }
+  document.getElementById('musicList').append(item);
+  document.getElementById('songName').value = '';
+  document.getElementById('songArtist').value = '';
+  document.getElementById('songUrl').value = '';
+  document.getElementById('songFile').value = '';
+}
+function applyEdits() {
+  const name = document.getElementById('nameInput').value.trim();
+  const message = document.getElementById('messageInput').value.trim();
+  const sign = document.getElementById('signInput').value.trim();
+  document.getElementById('letterTitle').textContent = name ? 'Para ' + name : 'Unas palabras para ti';
+  document.getElementById('letterBody').textContent = message || 'Hay cosas que a veces no caben en palabras, pero quería recordarte lo especial que eres para mí.';
+  document.getElementById('signature').textContent = sign || 'Con mucho cariño ♡';
+  document.getElementById('carta').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
